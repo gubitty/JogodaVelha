@@ -1,46 +1,96 @@
-import { Text, TouchableOpacity } from "react-native";
-import { View } from "react-native-reanimated/lib/typescript/Animated";
+import { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-export default function index() {
-  const nome = "Renato";
+export default function Index() {
 
-  return <View>
-    <Text>Jogo da Velha</Text>
-    <Text>Vencedor</Text>
-    <View>
-        <View>
-            <TouchableOpacity>
-                <Text>X</Text>
+    const [board, setBoard] = useState(Array(9).fill(null));
+    const [currentPlayer, setCurrentPlayer] = useState("X");
+    const [winner, setWinner] = useState(null);
+
+    const handlePress = (index: number) => {
+        const newBoard = [...board];
+        newBoard[index] = currentPlayer;
+        setBoard(newBoard);
+
+        setCurrentPlayer(currentPlayer === "X" ? "O" : "X");
+    }
+
+    const cell = (index: number) =>{
+        return(
+            <TouchableOpacity style={style.cell} onPress={() => handlePress(index)}>
+                <Text style={style.cellcontetnt}>{board[index]}</Text>
             </TouchableOpacity>
-            <TouchableOpacity>
-                <Text>X</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-                <Text>X</Text>
-            </TouchableOpacity>
+        );
+    }
+
+
+  return (
+    <View
+      style={style.container}
+        
+      
+    >
+      <Text style={style.title}>Joga da Velha</Text>
+      <Text style={style.status}>Vencedor</Text>
+
+      <View style={style.board}>
+        <View style={style.row}>
+        {cell(0)}
+        {cell(1)}
+        {cell(2)}
         </View>
-        <View>
-            <TouchableOpacity>
-                <Text>X</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-                <Text>X</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-                <Text>X</Text>
-            </TouchableOpacity>
+
+        <View style={style.row}>    
+        {cell(3)}
+        {cell(4)}
+        {cell(5)}
         </View>
-        <View>
-            <TouchableOpacity>
-                <Text>X</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-                <Text>X</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-                <Text>X</Text>
-            </TouchableOpacity>
+
+        <View style={style.row}>
+        {cell(6)}
+        {cell(7)}
+        {cell(8)}
         </View>
+
+      </View>
     </View>
-  </View>
+  );
 }
+
+
+const style = StyleSheet.create({
+    container:{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#FFFAF0",
+    },
+    title:{
+        fontSize: 24,
+        fontWeight:"bold",
+        marginBottom:20,
+    },
+    status:{
+        fontSize:18,
+        marginBottom:20,
+        },
+    board:{
+        marginBottom:20,
+    },
+    row:{
+        flexDirection:'row'
+    },
+    cell:{
+        width: 80,
+        height:80,
+        borderWidth:2,
+        borderColor: '#FFE4E1',
+        alignItems:"center",
+        justifyContent:"center",
+        backgroundColor:"#FFFFFF"
+    },
+    cellcontetnt: {
+    fontSize: 36,
+    fontWeight:"bold"
+    }
+})
